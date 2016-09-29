@@ -59,6 +59,7 @@ def info_print(poll_name:str,made_by:str,results:bool,final = False):
         for i in range(0,it):
             tuple_list.append((data[poll_name]['votes'][i],data[poll_name]['choices'][i]))
 
+        #tuple_list.sort(key=lambda tup: tup[0], reverse=True)
         poll_info += '**Standings:**\n\n'
 
         it = 0
@@ -67,6 +68,12 @@ def info_print(poll_name:str,made_by:str,results:bool,final = False):
             poll_info += '` {}.` ** {}    `Votes : {} `**\n'.format(str(it),choice[1],int(choice[0]))
 
         poll_info += '\n Created by ** {} **.\n Voting for this poll has **started**.\n'.format(made_by)
+        '''
+        it=0
+        for choice in data[poll_name]['choices']:
+            it += 1
+            poll_info += '`{}.` **{}**\n'.format(str(it),choice)
+        '''
         poll_info += '\nTo vote use `!poll_vote` command.'
         
         return poll_info
@@ -128,8 +135,10 @@ async def on_ready():
 async def poll_howto(ctx):
     if validate_channel(ctx):
         return
-
-    await bot.say('Hello, Im PollBot. Here is the list of commands you can use:\n\n`!poll_channel [argument]` -> Sets where bot commands will be usable. For server owners only. Available arguments: None - for PMs, [channel_name] - for channel on the server.\nExample: `!poll_channel None` for PMs only, or `!poll_channel examplechannel` for examplechannel only.\n\n`!poll_create [poll_name]<[option1],[option2],[option3],[opt]...` -> Creates poll with set name and with stated options. The poll will not start untill you use !poll_start command.\nExample: `!poll_create example poll<SAO,snk,M a g i, Re ;zero`\n\n`!poll_add [poll_name]<[option1],[option2],[option3],[opt]...` -> Adds stated options to poll. Can only be used by creator of the poll.\nExample: `!poll_add example poll<haruhi`\n\n`!poll_modify [poll_name]` -> Modifies name of stated poll or one of it\'s options. Can only be used by creator of the poll.\nExample:`!poll_modify example poll`\n\n`!poll_delete [poll_name]` -> Deletes stated poll. Can only be used by creator of the poll.\nExample:`!poll_delete example poll`\n\n`!poll_start [poll_name]` -> Starts stated poll. Can only be used by creator of the poll.\nExample:`!poll_start example poll`\n\n`!poll_end [poll_name]` -> Ends stated poll. Can only be used by creator of the poll. Sends results to creator of the poll. Deletes the poll afterwards.\nExample:`!poll_end example poll`\n\n`!poll_vote` -> Starts the voting process. You can only vote for each poll once.\nExample:`!poll_vote`\n\n`!poll_list` -> Lists currently opened and currently closed polls.\nExample:`!poll_list`\n\n`!poll_info [poll_name]` -> Sends you information and stats of the stated poll.\nExample:`!poll_info example poll`')
+    userid=ctx.message.author.id
+    msg='Hello, Im PollBot. Here is the list of commands you can use:\n\n`!poll_channel [argument]` -> Sets where bot commands will be usable. For server owners only. Available arguments: None - for PMs, [channel_name] - for channel on the server.\nExample: `!poll_channel None` for PMs only, or `!poll_channel examplechannel` for examplechannel only.\n\n`!poll_create [poll_name]<[option1],[option2],[option3],[opt]...` -> Creates poll with set name and with stated options. The poll will not start untill you use !poll_start command.\nExample: `!poll_create example poll<SAO,snk,M a g i, Re ;zero`\n\n`!poll_add [poll_name]<[option1],[option2],[option3],[opt]...` -> Adds stated options to poll. Can only be used by creator of the poll.\nExample: `!poll_add example poll<haruhi`\n\n`!poll_modify [poll_name]` -> Modifies name of stated poll or one of it\'s options. Can only be used by creator of the poll.\nExample:`!poll_modify example poll`\n\n`!poll_delete [poll_name]` -> Deletes stated poll. Can only be used by creator of the poll.\nExample:`!poll_delete example poll`\n\n`!poll_start [poll_name]` -> Starts stated poll. Can only be used by creator of the poll.\nExample:`!poll_start example poll`\n\n`!poll_end [poll_name]` -> Ends stated poll. Can only be used by creator of the poll. Sends results to creator of the poll. Deletes the poll afterwards.\nExample:`!poll_end example poll`\n\n`!poll_vote` -> Starts the voting process. You can only vote for each poll once.\nExample:`!poll_vote`\n\n`!poll_list` -> Lists currently opened and currently closed polls.\nExample:`!poll_list`\n\n`!poll_info [poll_name]` -> Sends you information and stats of the stated poll.\nExample:`!poll_info example poll`'
+    await bot.send_message(discord.User(id=userid),msg)
+   	
 
 @bot.command(pass_context = True)
 async def poll_create(ctx,*,line:str):
@@ -450,4 +459,4 @@ async def poll_channel(ctx,*,channel_name):
     else:
         await bot.say('Only server owners can use this command!')
 
-bot.run('token')
+bot.run('Your token goes here')
