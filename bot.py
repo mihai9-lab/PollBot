@@ -36,7 +36,7 @@ def validate_poll(poll_name:str):
 
 def json_write():
     with open(jsondir,'w') as outfile:
-            json.dump(data,lalalal)
+            json.dump(data,infile)
 
 def info_print(poll_name:str,made_by:str,results:bool,final = False):
     poll_info = '** {} **\n\n'.format(poll_name)
