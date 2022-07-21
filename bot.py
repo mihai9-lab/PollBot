@@ -13,8 +13,8 @@ jsondir = 'data.json'
 jsondir = os.path.join(absdir,jsondir)
 channeldir = 'channel_data.json'
 channeldir = os.path.join(absdir,channeldir)
-with open(jsondir,'r') as infile:    
-    data = json.load(infile)
+with open(jsondir,'r') as infile:
+    data = json.  load(infile)
 
 def validate_channel(ctx):
     if channel is None:
@@ -24,7 +24,7 @@ def validate_channel(ctx):
             return True
     else:
         if ctx.message.channel.name == channel:
-            return False 
+            return False
         else:
             return True
 
@@ -35,7 +35,7 @@ def validate_poll(poll_name:str):
     return False
 
 def json_write():
-    with open(jsondir,'w') as outfile:    
+    with open(jsondir,'w') as outfile:
             json.dump(data,outfile)
 
 def info_print(poll_name:str,made_by:str,results:bool,final = False):
@@ -47,7 +47,7 @@ def info_print(poll_name:str,made_by:str,results:bool,final = False):
         for choice in data[poll_name]['choices']:
             it += 1
             poll_info += '` {}.` ** {} **\n'.format(str(it),choice)
-            
+
         poll_info += '\n Created by ** {} **.\n Voting for this poll has **not started** yet!'.format(made_by)
         return poll_info
 
@@ -75,7 +75,7 @@ def info_print(poll_name:str,made_by:str,results:bool,final = False):
             poll_info += '`{}.` **{}**\n'.format(str(it),choice)
         '''
         poll_info += '\nTo vote use `!poll_vote` command.'
-        
+
         return poll_info
 
     else:
@@ -105,7 +105,7 @@ def info_print(poll_name:str,made_by:str,results:bool,final = False):
                         break
                 except Exception:
                     break
-                
+
             poll_info += ' **<<<**\n\n'
             it = 0
             for choice in tuple_list:
@@ -118,7 +118,7 @@ def info_print(poll_name:str,made_by:str,results:bool,final = False):
 @bot.event
 async def on_ready():
     await bot.change_status(game=discord.Game(name='!poll_howto'))
-    with open(channeldir,'r') as infile:    
+    with open(channeldir,'r') as infile:
         chan = json.load(infile)
     global channel
     if chan['channel'] == 'None':
@@ -138,7 +138,7 @@ async def poll_howto(ctx):
     userid=ctx.message.author.id
     msg='Hello, Im PollBot. Here is the list of commands you can use:\n\n`!poll_channel [argument]` -> Sets where bot commands will be usable. For server owners only. Available arguments: None - for PMs, [channel_name] - for channel on the server.\nExample: `!poll_channel None` for PMs only, or `!poll_channel examplechannel` for examplechannel only.\n\n`!poll_create [poll_name]<[option1],[option2],[option3],[opt]...` -> Creates poll with set name and with stated options. The poll will not start untill you use !poll_start command.\nExample: `!poll_create example poll<SAO,snk,M a g i, Re ;zero`\n\n`!poll_add [poll_name]<[option1],[option2],[option3],[opt]...` -> Adds stated options to poll. Can only be used by creator of the poll.\nExample: `!poll_add example poll<haruhi`\n\n`!poll_modify [poll_name]` -> Modifies name of stated poll or one of it\'s options. Can only be used by creator of the poll.\nExample:`!poll_modify example poll`\n\n`!poll_delete [poll_name]` -> Deletes stated poll. Can only be used by creator of the poll.\nExample:`!poll_delete example poll`\n\n`!poll_start [poll_name]` -> Starts stated poll. Can only be used by creator of the poll.\nExample:`!poll_start example poll`\n\n`!poll_end [poll_name]` -> Ends stated poll. Can only be used by creator of the poll. Sends results to creator of the poll. Deletes the poll afterwards.\nExample:`!poll_end example poll`\n\n`!poll_vote` -> Starts the voting process. You can only vote for each poll once.\nExample:`!poll_vote`\n\n`!poll_list` -> Lists currently opened and currently closed polls.\nExample:`!poll_list`\n\n`!poll_info [poll_name]` -> Sends you information and stats of the stated poll.\nExample:`!poll_info example poll`'
     await bot.send_message(discord.User(id=userid),msg)
-   	
+
 
 @bot.command(pass_context = True)
 async def poll_create(ctx,*,line:str):
@@ -269,7 +269,7 @@ async def poll_modify(ctx,*,poll_name:str):
     else:
         if poll_name == '':
             await bot.say('**Please enter valid poll name.**')
-        else:  
+        else:
             await bot.say('**That poll does not exist! Please enter valid poll name.**')
 
 @bot.command(pass_context = True)
@@ -292,7 +292,7 @@ async def poll_delete(ctx,*,poll_name:str):
 @bot.command(pass_context = True)
 async def poll_vote(ctx):
     if validate_channel(ctx):
-        return 
+        return
 
     def check(msg):
         return msg.content.startswith('')
@@ -376,7 +376,7 @@ async def poll_start(ctx,*,poll_name:str):
         await bot.say('**Poll `{}` does not exist!**'.format(poll_name))
 
 
-@bot.command(pass_context = True)   
+@bot.command(pass_context = True)
 async def poll_end(ctx,*,poll_name:str):
     if validate_channel(ctx):
         return
@@ -434,7 +434,7 @@ async def poll_channel(ctx,*,channel_name):
     if ctx.message.author.id == ctx.message.server.owner.id:
         global channel
         channel_exists = False
-        with open(channeldir,'r') as infile:    
+        with open(channeldir,'r') as infile:
             chan = json.load(infile)
 
         if channel_name == 'None':
@@ -454,7 +454,7 @@ async def poll_channel(ctx,*,channel_name):
                 await bot.say('Successfully changed interactions with bot to channel **{}** only.'.format(channel_name))
             else:
                 await bot.say('Channel **{}** does not exist!'.format(channel_name))
-        with open(channeldir,'w') as outfile:    
+        with open(channeldir,'w') as outfile:
                 json.dump(chan,outfile)
     else:
         await bot.say('Only server owners can use this command!')
